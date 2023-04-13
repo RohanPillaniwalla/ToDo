@@ -24,17 +24,25 @@ export default function App() {
 
 	return (
 		<View style={styles.container}>
-			<TextInput
-				placeholder="Add Todo"
-				value={todo}
-				onChangeText={(text) => setTodo(text)}
-			/>
-			<TouchableOpacity onPress={handleAddTodo}>
-				<Text>Add</Text>
-			</TouchableOpacity>
-
+			<View style={styles.inputContainer}>
+				<TextInput
+					style={styles.input}
+					placeholder="Add Todo"
+					value={todo}
+					onChangeText={(text) => setTodo(text)}
+				/>
+				<TouchableOpacity
+					onPress={handleAddTodo}
+					style={styles.addButton}>
+					<Text style={styles.addButtonText}>Add</Text>
+				</TouchableOpacity>
+			</View>
 			{todos.map((todo, index) => (
-				<Text key={index}>{todo}</Text>
+				<View
+					style={styles.todoContainer}
+					key={index}>
+					<Text style={styles.todoText}>{todo}</Text>
+				</View>
 			))}
 			<StatusBar style="auto" />
 		</View>
@@ -46,6 +54,42 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#fff',
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
+		paddingTop: 50,
+	},
+	inputContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		width: '90%',
+		marginBottom: 20,
+	},
+	input: {
+		borderWidth: 1,
+		borderColor: '#ccc',
+		padding: 10,
+		width: '70%',
+		borderRadius: 5,
+		fontSize: 18,
+		backgroundColor: '#fff',
+	},
+	addButton: {
+		backgroundColor: '#008cff',
+		padding: 10,
+		borderRadius: 5,
+	},
+	addButtonText: {
+		color: '#fff',
+		fontSize: 18,
+	},
+	todoContainer: {
+		backgroundColor: '#f2f2f2',
+		padding: 10,
+		width: '90%',
+		borderRadius: 5,
+		marginBottom: 10,
+	},
+	todoText: {
+		fontSize: 18,
 	},
 });
