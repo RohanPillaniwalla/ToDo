@@ -28,6 +28,7 @@ export default function App() {
 	const handleDeleteTodo = (id) => {
 		const newTodos = todos.filter((todo) => todo.id !== id);
 		setTodos(newTodos);
+		setSelectedTodo(null);
 	};
 
 	const handleSelectedTodo = (todo) => {
