@@ -8,18 +8,34 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
-// TODO APP
-// take input from user
-// add button adds the task in a list
-// display the tasks
+// import Todo from './Todo';
 
+// TODO APP
 export default function App() {
 	const [todo, setTodo] = useState('');
 	const [todos, setTodos] = useState([]);
+	const [selectedTodo, setSelectedTodo] = useState(null);
 
 	const handleAddTodo = () => {
-		setTodos([...todos, todo]);
+		const newTodo = {
+			id: Date.now(), // using current timestamp as the ID
+			text: todo,
+		};
+		setTodos([...todos, newTodo]);
 		setTodo('');
+	};
+
+	const handleDeleteTodo = (id) => {
+		const newTodos = todos.filter((todo) => todo.id !== id);
+		setTodos(newTodos);
+	};
+
+	const handleSelectedTodo = (todo) => {
+		if (selectedTodo) {
+			setSelectedTodo(null);
+			return;
+		}
+		setSelectedTodo(todo);
 	};
 
 	return (
@@ -37,12 +53,22 @@ export default function App() {
 					<Text style={styles.addButtonText}>Add</Text>
 				</TouchableOpacity>
 			</View>
-			{todos.map((todo, index) => (
-				<View
-					style={styles.todoContainer}
-					key={index}>
-					<Text style={styles.todoText}>{todo}</Text>
-				</View>
+
+			{todos.map((todo) => (
+				<TouchableOpacity
+					key={todo.id}
+					onPress={() => handleSelectedTodo(todo)}
+					style={styles.todoContainer}>
+					<Text style={styles.todoText}>{todo.text}</Text>
+
+					{selectedTodo && selectedTodo.id === todo.id && (
+						<TouchableOpacity
+							onPress={() => handleDeleteTodo(todo.id)}
+							style={styles.deleteButton}>
+							<Text style={styles.deleteButtonText}>Delete</Text>
+						</TouchableOpacity>
+					)}
+				</TouchableOpacity>
 			))}
 			<StatusBar style="auto" />
 		</View>
@@ -90,6 +116,15 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 	},
 	todoText: {
+		fontSize: 18,
+	},
+	deleteButton: {
+		backgroundColor: '#f00',
+		padding: 10,
+		borderRadius: 5,
+	},
+	deleteButtonText: {
+		color: '#fff',
 		fontSize: 18,
 	},
 });
